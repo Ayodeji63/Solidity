@@ -1,3 +1,6 @@
+# Ethers Simple Storage
+
+```solidity
 // I'm a comment!
 // SPDX-License-Identifier: MIT
 
@@ -31,3 +34,4 @@ contract SimpleStorage {
     nameToFavoriteNumber[_name] = _favoriteNumber;
   }
 }
+```
