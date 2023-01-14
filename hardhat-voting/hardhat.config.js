@@ -1,7 +1,9 @@
 require("@nomicfoundation/hardhat-toolbox")
 require("dotenv").config()
+require("hardhat-gas-reporter")
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
+const COINMARKET_CAP = process.env.COINMARKETCAP_API_KEY
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -13,5 +15,17 @@ module.exports = {
             accounts: [PRIVATE_KEY],
             chainId: 5,
         },
+        localNetwork: {
+            url: "http://127.0.0.1:8545/",
+            chainId: 31337,
+        },
+    },
+    gasReporter: {
+        enabled: true,
+        outputFile: "gas-report.txt",
+        noColors: true,
+        currency: "USD",
+        coinmarketcap: COINMARKET_CAP,
+        token: "MATIC",
     },
 }
