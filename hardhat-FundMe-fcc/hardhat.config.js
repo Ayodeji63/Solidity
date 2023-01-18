@@ -1,6 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox")
 require("hardhat-deploy")
 require("dotenv").config()
+require("hardhat-gas-reporter")
 
 /** @type import('hardhat/config').HardhatUserConfig */
 const GORERLI_RPC_URL = process.env.GORERLI_RPC_URL || "https:goerli-"
@@ -28,5 +29,11 @@ module.exports = {
         user: {
             default: 1,
         },
+    },
+    gasReporter: {
+        enabled: true,
+        outputFile: "gas-report.txt",
+        noColors: true,
+        currency: "USD",
     },
 }
