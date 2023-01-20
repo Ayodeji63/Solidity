@@ -8,7 +8,7 @@ developmentChains.includes(network.name)
     : describe("FundMe", async () => {
           let FundMe
           let deployer
-          const sendValue = ethers.utils.parseEther("1.0")
+          const sendValue = ethers.utils.parseEther("0.1")
 
           beforeEach(async () => {
               deployer = (await getNamedAccounts()).deployer
@@ -16,11 +16,18 @@ developmentChains.includes(network.name)
           })
 
           it("allows people to fund and withdraw", async () => {
-              await FundMe.fund({ value: sendValue })
-              await FundMe.withdraw()
-              const endingBalance = await FundMe.provider.getBalance(
+              const fundTxResponse = await FundMe.fund({ value: sendValue })
+              await fundTxResponse.wait(1)
+              const withdrawTxResponse = await FundMe.withdraw()
+              await withdrawTxResponse.wait(1)
+
+              const endingFundMeBalance = await FundMe.provider.getBalance(
                   FundMe.address
               )
-              assert.equal(endingBalance.toString(), "0")
+              console.log(
+                  endingFundMeBalance.toString() +
+                      " Should equal 0, running assert equal...."
+              )
+              assert.equal(endingFundMeBalance.toString(), "0")
           })
       })

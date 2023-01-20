@@ -1,6 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox")
 require("dotenv").config()
 require("hardhat-gas-reporter")
+require("@nomiclabs/hardhat-ethers")
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 const COINMARKET_CAP = process.env.COINMARKETCAP_API_KEY
@@ -27,5 +28,13 @@ module.exports = {
         currency: "USD",
         coinmarketcap: COINMARKET_CAP,
         token: "MATIC",
+    },
+    namedAccounts: {
+        deployer: {
+            default: 0,
+        },
+        user: {
+            default: 1,
+        },
     },
 }
