@@ -1,9 +1,10 @@
 const { assert, expect } = require("chai")
 const { network, getNamedAccounts, deployments, ethers } = require("hardhat")
-const {
-  developmentChains,
-  networkConfig,
-} = require("../../helper-hardhat-config")
+const { developmentChains } = require("../../../helper-hardhat-config")
+// const {
+//   developmentChains,
+//   networkConfig,
+// } = require("../../helper-hardhat-config")
 
 developmentChains.includes(network.name)
   ? describe.skip
@@ -20,10 +21,10 @@ developmentChains.includes(network.name)
       describe("fulfillRandomWords", () => {
         it("works with live chainlink keepers and chainlink vrf, we get a random winner", async () => {
           const startingTimeStamp = await raffle.getLatestTimeStamp()
-          const deployerAccount = await ethers.getSigners()
+          const accounts = await ethers.getSigners()
           await new Promise(async (resolve, reject) => {
             raffle.once("WinnerPicked", async () => {
-              console.log("WinnerPicked event fired")
+              console.log("WinnerPicked event fired!")
               try {
                 const recentWinner = await raffle.getRecentWinner()
                 const raffleState = await raffle.getRaffleState()

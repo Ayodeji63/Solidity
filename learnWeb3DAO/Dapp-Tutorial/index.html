@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    
+        div {
+            width: 20%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+    
+        button {
+            width: 100%;
+            margin: 15px 0px 15px 0px;
+            padding: 15px;
+            outline: none;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        #connect {
+            background-color: rgb(255, 248, 47);
+        }
+        #setMood {
+            background-color: rgb(165, 130, 42);
+            color: #fff;
+        }
+        #getMood {
+            background-color: rgb(255, 189, 47);
+        }
+    </style>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+</head>
+<body>
+    <h1>This is Ayodeji dApp</h1>
+    <p>Here we are gonna set up some mood</p>
+    <div>
+        <button onclick="connect()" id="connect">Connect</button>
+    </div>
+
+    <label for="mood">Input</label>
+    <input type="text" id="mood">
+    
+    <div>
+        <button onclick="setMood()" id="setMood">Set Mood</button>
+    </div>
+    <div>
+        <button onclick="getMood()" id="getMood">Get Mood</button>
+    </div>
+   <div>
+    <h1 id="moodval"></h1>
+   </div>
+
+    <script>
+        const MoodContractAddress = "0x951F6D606A80633E2D32e2727CDC2e012FCDe94d"
+        const MoodContractAbi = [
+                {
+                    "inputs": [
+                        {
+                            "internalType": "string",
+                            "name": "_mood",
+                            "type": "string"
+                        }
+                    ],
+                    "name": "setMood",
+                    "outputs": [],
+                    "stateMutability": "nonpayable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [],
+                    "name": "getMood",
+                    "outputs": [
+                        {
+                            "internalType": "string",
+                            "name": "",
+                            "type": "string"
+                        }
+                    ],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ]
+            let MoodContract;
+            let signer;
+            
+        
+            async function connect() {
+                if (typeof window.ethereum !== "undefined") {
+                    await window.ethereum.request({method: "eth_requestAccounts"})
+                    document.getElementById("connect").innerHTML = "Connected"
+                } else {
+                    document.innerHTML = "install Wallet"
+                }
+            }
+
+            async function getMood() {
+                const getMoodPromise = MoodContract.getMood();
+                const Mood = await getMoodPromise;
+                console.log(Mood);
+                document.getElementById('moodval').innerHTML = Mood;
+            }
+
+            async function setMood() {
+                    const provider = new ethers.providers.Web3Provider(window.ethereum, "goerli")
+                const mood = document.getElementById('mood').value;
+                const signer = provider.getSigner()
+                console.log(signer);
+                MoodContract = new ethers.Contract(MoodContractAddress, MoodContractAbi, signer)
+                try {
+                    const setMoodPromise = MoodContract.setMood(mood);
+                    console.log("Done!"); 
+                } catch (error) {
+                    console.log(error);
+                }
+                document.getElementById('mood').value = "";
+            }
+    </script>
+</body>
+</html>
